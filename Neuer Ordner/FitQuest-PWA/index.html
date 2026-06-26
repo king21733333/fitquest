@@ -384,6 +384,13 @@
   .fiti-svg-big { width:160px; height:160px; }
   .fiti-svg-mini { width:70px; height:70px; }
 
+  /* Fiti Home Card */
+  .fiti-home-card { display:flex; align-items:center; gap:14px; background:linear-gradient(135deg,rgba(108,99,255,0.15),rgba(168,85,247,0.1)); border:1.5px solid rgba(108,99,255,0.25); border-radius:20px; padding:14px 16px; margin-bottom:16px; }
+  .fiti-home-info { flex:1; }
+  .fiti-home-name { font-size:16px; font-weight:800; color:var(--text); margin-bottom:4px; }
+  .fiti-home-bubble { font-size:13px; color:var(--muted); margin-bottom:10px; line-height:1.4; }
+  .fiti-home-stats { display:flex; gap:16px; font-size:13px; font-weight:700; color:var(--text); }
+
   /* Tab badge */
   .tab-badge { background:var(--accent2); color:#fff; font-size:10px; font-weight:800; padding:1px 5px; border-radius:8px; margin-left:4px; display:none; }
   .tab-badge.show { display:inline-block; }
@@ -617,22 +624,20 @@
     <button class="tab-btn" onclick="switchTab('fasting')">⏱ Fasten</button>
     <button class="tab-btn" id="schatzTabBtn" onclick="switchTab('schatz')">🎁 Schatz<span class="tab-badge" id="chestBadge"></span></button>
     <button class="tab-btn" onclick="switchTab('log')">Verlauf</button>
-    <button class="tab-btn" onclick="switchTab('pet')">🐾 Pet</button>
     <button class="tab-btn" onclick="switchTab('profile')">Profil</button>
   </div>
 
   <!-- HABITS TAB -->
   <div class="section active" id="tab-habits">
-    <!-- Pet main-page card -->
-    <div class="pet-main-card">
-      <div class="pet-main-svg-col" id="petMainSvg"></div>
-      <div class="pet-main-info">
-        <div class="pet-main-name" id="petMainName">Mein Begleiter</div>
-        <div class="pet-main-bubble" id="petMainBubble">Ich warte auf deinen ersten Task…</div>
-        <div class="pet-main-bars">
-          <div class="pet-main-bar-row"><span class="pet-main-bar-icon">🍗</span><div class="pet-main-bar-track"><div class="pet-main-bar-fill" id="petMainHunger" style="width:70%;background:var(--accent3)"></div></div></div>
-          <div class="pet-main-bar-row"><span class="pet-main-bar-icon">⚡</span><div class="pet-main-bar-track"><div class="pet-main-bar-fill" id="petMainEnergy" style="width:60%;background:var(--accent)"></div></div></div>
-          <div class="pet-main-bar-row"><span class="pet-main-bar-icon">😊</span><div class="pet-main-bar-track"><div class="pet-main-bar-fill" id="petMainHappy" style="width:50%;background:var(--accent2)"></div></div></div>
+    <!-- Fiti Home Card -->
+    <div class="fiti-home-card" onclick="switchTab('schatz')" style="cursor:pointer">
+      <div id="fitiHomeDisplay"></div>
+      <div class="fiti-home-info">
+        <div class="fiti-home-name">Fiti</div>
+        <div class="fiti-home-bubble" id="fitiHomeBubble">Tippe um zum Schatz-Tab zu gehen! 🎁</div>
+        <div class="fiti-home-stats">
+          <span>📦 <span id="fitiHomeChests">0</span> Truhen</span>
+          <span>🏆 <span id="fitiHomeItems">0</span> Items</span>
         </div>
       </div>
     </div>
@@ -1011,45 +1016,7 @@
   </div>
 
   <!-- PET TAB -->
-  <div class="section" id="tab-pet">
-    <div class="pet-container">
-      <div class="pet-stage-label" id="petStageName">Ei · Level 1</div>
-      <div class="pet-name-row">
-        <input class="pet-name-input" id="petNameInput" placeholder="Name deines Begleiters" maxlength="20" oninput="savePetName()" />
-      </div>
-      <div class="pet-canvas-wrap">
-        <div id="petSvgDisplay" class="pet-svg-display"></div>
-      </div>
-      <div class="pet-mood-bubble" id="petMoodText">Ich warte auf deinen ersten Task…</div>
-      <div class="pet-stats-card">
-        <div class="pet-stat-row">
-          <div class="pet-stat-icon">🍗</div>
-          <div class="pet-stat-inner">
-            <div class="pet-stat-top"><span>Hunger</span><span id="hungerVal">70%</span></div>
-            <div class="pet-stat-bar"><div class="pet-stat-fill" id="hungerBar" style="width:70%;background:var(--accent3)"></div></div>
-          </div>
-        </div>
-        <div class="pet-stat-row">
-          <div class="pet-stat-icon">⚡</div>
-          <div class="pet-stat-inner">
-            <div class="pet-stat-top"><span>Energie</span><span id="energyVal">60%</span></div>
-            <div class="pet-stat-bar"><div class="pet-stat-fill" id="energyBar" style="width:60%;background:var(--accent)"></div></div>
-          </div>
-        </div>
-        <div class="pet-stat-row">
-          <div class="pet-stat-icon">😊</div>
-          <div class="pet-stat-inner">
-            <div class="pet-stat-top"><span>Glück</span><span id="happinessVal">50%</span></div>
-            <div class="pet-stat-bar"><div class="pet-stat-fill" id="happinessBar" style="width:50%;background:var(--accent2)"></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="pet-evo-card">
-        <div class="pet-evo-title">Entwicklungsstufen</div>
-        <div class="pet-evo-track" id="petEvoTrack"></div>
-      </div>
-    </div>
-  </div>
+  <div class="section" id="tab-pet" style="display:none"></div>
 </div>
 
   <!-- PROFILE TAB -->
@@ -2756,7 +2723,7 @@ if (profile) prefillOnboarding(profile);
 document.getElementById('dateBadge').textContent = getToday();
 updateXPBar();
 renderHabits();
-renderPet();
+renderFitiHome();
 updateNutritionHabit();
 renderNutrition();
 renderWorkouts();
@@ -3005,6 +2972,23 @@ function closeAiModal(e) {
   if (e && e.target !== document.getElementById('aiModalOverlay')) return;
   document.getElementById('aiModalOverlay').classList.remove('show');
   aiIngredients = [];
+}
+
+function renderFitiHome() {
+  const el = document.getElementById('fitiHomeDisplay');
+  if (el) el.innerHTML = getFitiSVG(90);
+  const chests = document.getElementById('fitiHomeChests');
+  const items  = document.getElementById('fitiHomeItems');
+  if (chests) chests.textContent = state.pendingChests || 0;
+  if (items)  items.textContent  = (state.inventory || []).length;
+  // Bubble-Text je nach Zustand
+  const bubble = document.getElementById('fitiHomeBubble');
+  if (bubble) {
+    const n = state.pendingChests || 0;
+    if (n > 0) bubble.textContent = `Du hast ${n} Truhe${n>1?'n':''} zu öffnen! 📦`;
+    else if ((state.inventory||[]).length === 0) bubble.textContent = 'Sammle XP um Truhen zu bekommen! 💪';
+    else bubble.textContent = 'Geh zum Schatz-Tab um mich auszustaffieren! 🎁';
+  }
 }
 
 // ─── ITEMS DATABASE (310 items) ─────────────────────────────────────────────
@@ -3265,7 +3249,7 @@ function checkChestEarned(xpGained) {
   }
   if (earned > 0) {
     updateChestBadge();
-    setTimeout(() => showToast(`📦 ${earned} neue Truhe${earned>1?'n':''}! Schau im Schatz-Tab vorbei!`), 500);
+    setTimeout(() => { showToast(`📦 ${earned} neue Truhe${earned>1?'n':''}! Schau im Schatz-Tab vorbei!`); renderFitiHome(); }, 500);
   }
   updateChestUI();
 }
@@ -3344,6 +3328,7 @@ function revealChestItem() {
 function collectChestItem() {
   document.getElementById('chestModalOverlay').classList.remove('show');
   renderSchatz();
+  renderFitiHome();
 }
 
 // ─── SCHATZ TAB ──────────────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-const CACHE = 'fitquest-v12';
+const CACHE = 'fitquest-v13';
 const ASSETS = [
   './',
   './index.html',

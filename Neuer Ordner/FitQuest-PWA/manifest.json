@@ -2,7 +2,7 @@
   "name": "FitQuest – Fitness Tracker",
   "short_name": "FitQuest",
   "description": "Dein persönlicher Fitness- und Lifestyle-Tracker mit Tamagotchi-Pet",
-  "start_url": "./index.html",
+  "start_url": "./fitness-tracker (1).html",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#6c63ff",
