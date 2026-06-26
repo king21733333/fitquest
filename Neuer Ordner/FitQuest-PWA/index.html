@@ -320,6 +320,74 @@
   .dish-portion-lbl { font-size: 13px; color: var(--muted); flex: 1; }
   .dish-portion-g { font-size: 12px; color: var(--accent); font-weight: 700; background: rgba(108,99,255,0.1); padding: 4px 10px; border-radius: 8px; white-space: nowrap; }
 
+  /* ── Loot / Schatz System ───────────────────────────────────────── */
+  /* Rarity borders */
+  .r-common  { border-color: #9ca3af !important; }
+  .r-rare    { border-color: #3b82f6 !important; box-shadow: 0 0 8px rgba(59,130,246,0.4); }
+  .r-epic    { border-color: #8b5cf6 !important; box-shadow: 0 0 10px rgba(139,92,246,0.5); }
+  .r-unique  { border-color: #f59e0b !important; box-shadow: 0 0 14px rgba(245,158,11,0.6); animation: uniquePulse 2s ease-in-out infinite; }
+  @keyframes uniquePulse { 0%,100%{box-shadow:0 0 10px rgba(245,158,11,0.5)} 50%{box-shadow:0 0 22px rgba(245,158,11,0.9)} }
+
+  /* Rarity labels */
+  .rarity-badge { font-size:10px; font-weight:800; padding:2px 7px; border-radius:6px; text-transform:uppercase; letter-spacing:0.05em; }
+  .rarity-badge.common  { background:rgba(156,163,175,0.15); color:#9ca3af; }
+  .rarity-badge.rare    { background:rgba(59,130,246,0.15);  color:#3b82f6; }
+  .rarity-badge.epic    { background:rgba(139,92,246,0.15);  color:#8b5cf6; }
+  .rarity-badge.unique  { background:rgba(245,158,11,0.15);  color:#f59e0b; }
+
+  /* Inventory grid */
+  .inventory-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+  .inv-item { aspect-ratio:1; background:var(--surface2); border:2px solid var(--border); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; position:relative; transition:all 0.15s; font-size:22px; }
+  .inv-item:hover { transform:scale(1.06); }
+  .inv-item.equipped::after { content:'✓'; position:absolute; top:2px; right:4px; font-size:10px; font-weight:800; color:var(--success); }
+  .inv-item .inv-name { display:none; position:absolute; bottom:-28px; left:50%; transform:translateX(-50%); background:rgba(20,10,60,0.9); color:#fff; font-size:10px; white-space:nowrap; padding:3px 7px; border-radius:6px; z-index:10; }
+  .inv-item:hover .inv-name { display:block; }
+
+  /* Slot display */
+  .equip-slots { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:16px; }
+  .equip-slot { aspect-ratio:1; background:var(--surface2); border:2px dashed var(--border); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:all 0.15s; }
+  .equip-slot.filled { border-style:solid; background:var(--surface); }
+  .equip-slot .slot-emoji { font-size:22px; }
+  .equip-slot .slot-label { font-size:9px; color:var(--muted); margin-top:3px; text-transform:uppercase; letter-spacing:0.04em; }
+
+  /* Chest area */
+  .chest-area { background:linear-gradient(135deg,rgba(108,99,255,0.08),rgba(233,30,140,0.08)); border:1.5px solid rgba(108,99,255,0.2); border-radius:20px; padding:18px; margin-bottom:14px; text-align:center; }
+  .chest-count { font-size:42px; font-weight:800; color:var(--accent); letter-spacing:-1px; }
+  .chest-sub { font-size:12px; color:var(--muted); margin-bottom:14px; }
+  .chest-open-btn { background:linear-gradient(135deg,var(--accent),#a855f7); color:#fff; border:none; border-radius:16px; padding:13px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:var(--font); box-shadow:0 4px 14px rgba(108,99,255,0.4); transition:all 0.18s; }
+  .chest-open-btn:disabled { opacity:0.4; cursor:default; }
+  .xp-chest-bar-wrap { margin-top:14px; }
+  .xp-chest-bar-lbl { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:5px; }
+  .xp-chest-bar { background:var(--surface2); border-radius:8px; height:7px; overflow:hidden; }
+  .xp-chest-fill { height:100%; border-radius:8px; background:linear-gradient(90deg,var(--accent),#a855f7); transition:width 0.5s ease; }
+
+  /* Chest modal */
+  .chest-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:2000; display:none; align-items:center; justify-content:center; backdrop-filter:blur(6px); }
+  .chest-modal-overlay.show { display:flex; }
+  .chest-modal { background:var(--surface); border-radius:28px; padding:32px 24px; width:min(340px,92vw); text-align:center; animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes popIn { from{transform:scale(0.5);opacity:0} to{transform:scale(1);opacity:1} }
+  .chest-modal-icon { font-size:72px; cursor:pointer; transition:transform 0.2s; display:inline-block; animation:chestShake 0.5s ease-in-out infinite; }
+  .chest-modal-icon.opened { animation:none; }
+  @keyframes chestShake { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-6deg)} 75%{transform:rotate(6deg)} }
+  .chest-modal-title { font-size:18px; font-weight:800; color:var(--text); margin:12px 0 4px; }
+  .chest-modal-sub { font-size:13px; color:var(--muted); margin-bottom:20px; }
+  .chest-item-reveal { padding:20px; border-radius:20px; border:3px solid; margin:16px 0; position:relative; overflow:hidden; }
+  .chest-item-emoji { font-size:56px; display:block; margin-bottom:8px; }
+  .chest-item-name { font-size:16px; font-weight:800; color:var(--text); }
+  .chest-item-slot { font-size:12px; color:var(--muted); margin-top:4px; }
+  .chest-stars { font-size:20px; letter-spacing:4px; margin:8px 0; }
+  .chest-dupe-badge { background:var(--surface2); color:var(--muted); font-size:11px; font-weight:700; padding:3px 10px; border-radius:10px; display:inline-block; margin-top:6px; }
+  .chest-modal-btn { background:linear-gradient(135deg,var(--accent),#a855f7); color:#fff; border:none; border-radius:14px; padding:12px 28px; font-size:14px; font-weight:700; cursor:pointer; font-family:var(--font); margin-top:4px; }
+
+  /* Fiti mascot */
+  .fiti-wrap { display:flex; flex-direction:column; align-items:center; }
+  .fiti-svg-big { width:160px; height:160px; }
+  .fiti-svg-mini { width:70px; height:70px; }
+
+  /* Tab badge */
+  .tab-badge { background:var(--accent2); color:#fff; font-size:10px; font-weight:800; padding:1px 5px; border-radius:8px; margin-left:4px; display:none; }
+  .tab-badge.show { display:inline-block; }
+
   /* ── Kamera / AI-Erkennung ───────────────────────────────────────── */
   .camera-btn-wrap { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(233,30,140,0.08)); border: 1.5px dashed rgba(108,99,255,0.3); border-radius: 16px; padding: 14px 16px; margin-bottom: 14px; cursor: pointer; transition: all 0.15s; }
   .camera-btn-wrap:hover { border-color: var(--accent); background: rgba(108,99,255,0.1); }
@@ -547,6 +615,7 @@
     <button class="tab-btn" onclick="switchTab('nutrition')">Ernährung</button>
     <button class="tab-btn" onclick="switchTab('workout')">Training</button>
     <button class="tab-btn" onclick="switchTab('fasting')">⏱ Fasten</button>
+    <button class="tab-btn" id="schatzTabBtn" onclick="switchTab('schatz')">🎁 Schatz<span class="tab-badge" id="chestBadge"></span></button>
     <button class="tab-btn" onclick="switchTab('log')">Verlauf</button>
     <button class="tab-btn" onclick="switchTab('pet')">🐾 Pet</button>
     <button class="tab-btn" onclick="switchTab('profile')">Profil</button>
@@ -863,6 +932,76 @@
     </div>
   </div>
 
+  <!-- SCHATZ TAB -->
+  <div class="section" id="tab-schatz">
+    <!-- Fiti mit Equipment -->
+    <div class="fiti-wrap" style="margin-bottom:16px">
+      <div id="fitiDisplaySchatz"></div>
+      <div id="fitiNameSchatz" style="font-size:13px;font-weight:700;color:var(--muted);margin-top:6px">Fiti</div>
+    </div>
+
+    <!-- Equipment Slots -->
+    <div class="section-title">Ausrüstung</div>
+    <div class="equip-slots" id="equipSlots">
+      <div class="equip-slot" id="slot-hat"    onclick="showSlotInventory('hat')"><span class="slot-emoji">🎩</span><span class="slot-label">Hut</span></div>
+      <div class="equip-slot" id="slot-face"   onclick="showSlotInventory('face')"><span class="slot-emoji">👓</span><span class="slot-label">Gesicht</span></div>
+      <div class="equip-slot" id="slot-neck"   onclick="showSlotInventory('neck')"><span class="slot-emoji">📿</span><span class="slot-label">Hals</span></div>
+      <div class="equip-slot" id="slot-body"   onclick="showSlotInventory('body')"><span class="slot-emoji">👕</span><span class="slot-label">Körper</span></div>
+      <div class="equip-slot" id="slot-aura"   onclick="showSlotInventory('aura')"><span class="slot-emoji">✨</span><span class="slot-label">Aura</span></div>
+    </div>
+
+    <!-- Truhen -->
+    <div class="section-title">Schatztruhen</div>
+    <div class="chest-area">
+      <div class="chest-count" id="chestCount">0</div>
+      <div class="chest-sub">Truhen warten auf dich!</div>
+      <button class="chest-open-btn" id="chestOpenBtn" onclick="openNextChest()" disabled>📦 Truhe öffnen</button>
+      <div class="xp-chest-bar-wrap">
+        <div class="xp-chest-bar-lbl">
+          <span>Nächste Truhe</span>
+          <span id="chestXpLabel">0 / 150 XP</span>
+        </div>
+        <div class="xp-chest-bar"><div class="xp-chest-fill" id="chestXpFill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Inventar -->
+    <div class="section-title">Inventar <span id="invCount" style="font-weight:400;color:var(--muted)"></span></div>
+    <!-- Filter -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px" id="invFilters">
+      <button class="fasting-hour-btn active" onclick="filterInv('all',this)">Alle</button>
+      <button class="fasting-hour-btn" onclick="filterInv('hat',this)">🎩 Hüte</button>
+      <button class="fasting-hour-btn" onclick="filterInv('face',this)">👓 Gesicht</button>
+      <button class="fasting-hour-btn" onclick="filterInv('neck',this)">📿 Hals</button>
+      <button class="fasting-hour-btn" onclick="filterInv('body',this)">👕 Körper</button>
+      <button class="fasting-hour-btn" onclick="filterInv('aura',this)">✨ Aura</button>
+    </div>
+    <div class="inventory-grid" id="inventoryGrid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📦</div>Öffne Truhen um Items zu sammeln!</div>
+    </div>
+  </div>
+
+  <!-- Truhen-Öffnungs-Modal -->
+  <div class="chest-modal-overlay" id="chestModalOverlay">
+    <div class="chest-modal" id="chestModal">
+      <div id="chestModalInner">
+        <div class="chest-modal-icon" id="chestIcon" onclick="revealChestItem()">📦</div>
+        <div class="chest-modal-title">Truhe gefunden!</div>
+        <div class="chest-modal-sub">Tippe auf die Truhe um sie zu öffnen</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slot-Inventar Modal (zum Ausrüsten) -->
+  <div class="ai-modal-overlay" id="slotModalOverlay" onclick="closeSlotModal(event)">
+    <div class="ai-modal" id="slotModal">
+      <div class="ai-modal-title" id="slotModalTitle">Hüte</div>
+      <div class="ai-modal-sub">Tippe ein Item zum Ausrüsten / Ablegen</div>
+      <div class="inventory-grid" id="slotInventoryGrid" style="margin-top:12px"></div>
+      <button class="btn-secondary" style="width:100%;margin-top:14px" onclick="closeSlotModal()">Schließen</button>
+    </div>
+  </div>
+
   <!-- LOG TAB -->
   <div class="section" id="tab-log">
     <div class="section-title">XP-Verlauf</div>
@@ -927,7 +1066,7 @@
       <div class="fasting-settings-row">
         <div>
           <div class="fasting-settings-label">Gemini API-Key</div>
-          <div class="fasting-settings-sub">Für automatische Foto-Erkennung von Gerichten</div>
+          <div class="fasting-settings-sub">Nur nötig wenn die App nicht auf Netlify läuft</div>
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
@@ -1040,7 +1179,9 @@ let state = {
   habits: {}, meals: [], workouts: [], activityLog: [], lastDate: '',
   profile: null, recipes: [], recentSports: [],
   fasting: { enabled: true, active: false, startTime: null, targetHours: 16,
-              autoStart: true, autoStartHour: 18, sessions: [] }
+              autoStart: true, autoStartHour: 18, sessions: [] },
+  inventory: [], equipped: {hat:null,face:null,neck:null,body:null,aura:null},
+  pendingChests: 0, xpAccumulated: 0, totalChestsOpened: 0
 };
 
 // Profile & goals
@@ -1271,6 +1412,7 @@ function gainXP(amount, label) {
   if (state.activityLog.length > 50) state.activityLog.pop();
   saveState();
   updateXPBar();
+  checkChestEarned(amount);
   showToast('⚡ ' + label + ' <span class="xp-gain">+' + amount + ' XP</span>');
   if (newLevel > oldLevel) {
     state.level = newLevel;
@@ -2261,6 +2403,7 @@ function switchTab(id) {
   if (id === 'nutrition') renderNutrition();
   if (id === 'workout')   renderWorkouts();
   if (id === 'fasting')   renderFastingTab();
+  if (id === 'schatz')    renderSchatz();
   if (id === 'profile')   setTimeout(initGeminiKeyUI, 50);
   if (id === 'log')       renderLog();
   if (id === 'profile')   renderProfile();
@@ -2619,6 +2762,10 @@ renderNutrition();
 renderWorkouts();
 renderLog();
 
+// Schatz: Badge + Chest UI initialisieren
+updateChestBadge();
+updateChestUI();
+
 // Fasting init: Timer weiterlaufen lassen wenn App neu geladen wird
 (function initFasting() {
   const f = getFasting();
@@ -2654,13 +2801,13 @@ function initGeminiKeyUI() {
 let aiIngredients = []; // [{name, emoji, amount, per100, selected}]
 
 function openFoodCamera() {
-  const key = getGeminiKey();
-  if (!key) {
+  const isOnNetlify = window.location.hostname.includes('netlify.app') ||
+                      window.location.hostname.includes('netlify.com');
+  if (!isOnNetlify && !getGeminiKey()) {
     showToast('🔑 Bitte zuerst Gemini API-Key im Profil eintragen');
     switchTab('profile');
-    document.querySelectorAll('.tab-btn').forEach((b,i) => {
-      if (b.textContent.includes('Profil')) { b.classList.add('active'); }
-      else b.classList.remove('active');
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.toggle('active', b.textContent.includes('Profil'));
     });
     return;
   }
@@ -2692,7 +2839,6 @@ async function analyzeWithGemini(dataUrl, file) {
   overlay.classList.add('show');
 
   try {
-    const key = getGeminiKey();
     const base64 = dataUrl.split(',')[1];
     const mime = file.type || 'image/jpeg';
 
@@ -2706,23 +2852,39 @@ Regeln:
 - Kein Essen sichtbar: []
 Antworte nur mit dem JSON-Array, nichts sonst.`;
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { text: prompt },
-            { inline_data: { mime_type: mime, data: base64 } }
-          ]
-        }],
-        generationConfig: {
-          temperature: 0.1,
-          maxOutputTokens: 1024,
-          responseMimeType: 'application/json'
-        }
-      })
-    });
+    const requestBody = {
+      contents: [{
+        parts: [
+          { text: prompt },
+          { inline_data: { mime_type: mime, data: base64 } }
+        ]
+      }],
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 1024,
+        responseMimeType: 'application/json'
+      }
+    };
+
+    // Netlify Function verwenden wenn verfügbar (kein Key nötig), sonst direkter API-Aufruf
+    const isOnNetlify = window.location.hostname.includes('netlify.app') ||
+                        window.location.hostname.includes('netlify.com');
+    let res;
+    if (isOnNetlify) {
+      res = await fetch('/.netlify/functions/analyze-food', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+    } else {
+      const key = getGeminiKey();
+      if (!key) throw new Error('Bitte API-Key im Profil eintragen');
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+    }
 
     if (!res.ok) {
       const errBody = await res.json().catch(() => ({}));
@@ -2843,6 +3005,452 @@ function closeAiModal(e) {
   if (e && e.target !== document.getElementById('aiModalOverlay')) return;
   document.getElementById('aiModalOverlay').classList.remove('show');
   aiIngredients = [];
+}
+
+// ─── ITEMS DATABASE (310 items) ─────────────────────────────────────────────
+// {id, n:name, e:emoji, s:slot, r:rarity}
+const ITEMS_DB = [
+// ── COMMON HATS (1-30) ──
+{id:1,n:'Rote Mütze',e:'🧢',s:'hat',r:'common'},{id:2,n:'Blaue Mütze',e:'🧢',s:'hat',r:'common'},
+{id:3,n:'Grüne Mütze',e:'🧢',s:'hat',r:'common'},{id:4,n:'Gelbe Mütze',e:'🧢',s:'hat',r:'common'},
+{id:5,n:'Pink Mütze',e:'🧢',s:'hat',r:'common'},{id:6,n:'Lila Mütze',e:'🧢',s:'hat',r:'common'},
+{id:7,n:'Orange Mütze',e:'🧢',s:'hat',r:'common'},{id:8,n:'Weiße Mütze',e:'🧢',s:'hat',r:'common'},
+{id:9,n:'Schwarze Mütze',e:'🧢',s:'hat',r:'common'},{id:10,n:'Gestreifte Mütze',e:'🎩',s:'hat',r:'common'},
+{id:11,n:'Rote Beanie',e:'🎿',s:'hat',r:'common'},{id:12,n:'Blaue Beanie',e:'🎿',s:'hat',r:'common'},
+{id:13,n:'Stern Beanie',e:'⭐',s:'hat',r:'common'},{id:14,n:'Wolken Beanie',e:'☁️',s:'hat',r:'common'},
+{id:15,n:'Blumen Beanie',e:'🌸',s:'hat',r:'common'},{id:16,n:'Strohhut',e:'👒',s:'hat',r:'common'},
+{id:17,n:'Sommerhut',e:'🌞',s:'hat',r:'common'},{id:18,n:'Mini Zylinder',e:'🎩',s:'hat',r:'common'},
+{id:19,n:'Baby Schleife',e:'🎀',s:'hat',r:'common'},{id:20,n:'Matrosen Hut',e:'⚓',s:'hat',r:'common'},
+{id:21,n:'Propeller Hut',e:'🚁',s:'hat',r:'common'},{id:22,n:'Papierboot Hut',e:'🚤',s:'hat',r:'common'},
+{id:23,n:'Schiebermütze',e:'🧢',s:'hat',r:'common'},{id:24,n:'Wollmütze',e:'🧶',s:'hat',r:'common'},
+{id:25,n:'Polka Dot Hut',e:'🎪',s:'hat',r:'common'},{id:26,n:'Karierter Hut',e:'♟️',s:'hat',r:'common'},
+{id:27,n:'Bade Kappe',e:'🏊',s:'hat',r:'common'},{id:28,n:'Türkise Mütze',e:'🧢',s:'hat',r:'common'},
+{id:29,n:'Korallen Mütze',e:'🧢',s:'hat',r:'common'},{id:30,n:'Minze Mütze',e:'🍃',s:'hat',r:'common'},
+// ── COMMON FACE (31-60) ──
+{id:31,n:'Rote Brille',e:'👓',s:'face',r:'common'},{id:32,n:'Blaue Brille',e:'👓',s:'face',r:'common'},
+{id:33,n:'Grüne Brille',e:'👓',s:'face',r:'common'},{id:34,n:'Gelbe Brille',e:'👓',s:'face',r:'common'},
+{id:35,n:'Pink Brille',e:'🕶️',s:'face',r:'common'},{id:36,n:'Lila Brille',e:'👓',s:'face',r:'common'},
+{id:37,n:'Stern Brille',e:'⭐',s:'face',r:'common'},{id:38,n:'Herz Brille',e:'❤️',s:'face',r:'common'},
+{id:39,n:'Runde Brille',e:'🔵',s:'face',r:'common'},{id:40,n:'Kleine Sommersprossen',e:'✨',s:'face',r:'common'},
+{id:41,n:'Rosa Wangen',e:'🌸',s:'face',r:'common'},{id:42,n:'Orange Wangen',e:'🍊',s:'face',r:'common'},
+{id:43,n:'Einfache Maske',e:'😷',s:'face',r:'common'},{id:44,n:'Knopf Nase',e:'🔘',s:'face',r:'common'},
+{id:45,n:'Schläfrige Augen',e:'😴',s:'face',r:'common'},{id:46,n:'Fröhliche Augen',e:'😊',s:'face',r:'common'},
+{id:47,n:'Kleine Schleife',e:'🎀',s:'face',r:'common'},{id:48,n:'Kleiner Stern',e:'⭐',s:'face',r:'common'},
+{id:49,n:'Rosige Wangen',e:'💗',s:'face',r:'common'},{id:50,n:'Pflaster',e:'🩹',s:'face',r:'common'},
+{id:51,n:'Mini Narbe',e:'⚡',s:'face',r:'common'},{id:52,n:'Kleines Augenzwinkern',e:'😉',s:'face',r:'common'},
+{id:53,n:'Regenbogen Sommersprossen',e:'🌈',s:'face',r:'common'},{id:54,n:'Punkt Augen',e:'●',s:'face',r:'common'},
+{id:55,n:'Traurige Brauen',e:'😟',s:'face',r:'common'},{id:56,n:'Wütende Brauen',e:'😠',s:'face',r:'common'},
+{id:57,n:'Kleine Träne',e:'💧',s:'face',r:'common'},{id:58,n:'Mini Schnurrbart',e:'🥸',s:'face',r:'common'},
+{id:59,n:'Herz Wange',e:'💕',s:'face',r:'common'},{id:60,n:'Mond Markierung',e:'🌙',s:'face',r:'common'},
+// ── COMMON NECK (61-90) ──
+{id:61,n:'Roter Schal',e:'🧣',s:'neck',r:'common'},{id:62,n:'Blauer Schal',e:'🧣',s:'neck',r:'common'},
+{id:63,n:'Grüner Schal',e:'🧣',s:'neck',r:'common'},{id:64,n:'Gelber Schal',e:'🧣',s:'neck',r:'common'},
+{id:65,n:'Pink Schal',e:'🧣',s:'neck',r:'common'},{id:66,n:'Lila Schal',e:'🧣',s:'neck',r:'common'},
+{id:67,n:'Orange Schal',e:'🧣',s:'neck',r:'common'},{id:68,n:'Gestreifter Schal',e:'🌈',s:'neck',r:'common'},
+{id:69,n:'Gepunkteter Schal',e:'⚫',s:'neck',r:'common'},{id:70,n:'Stern Schal',e:'⭐',s:'neck',r:'common'},
+{id:71,n:'Rote Schleife',e:'🎀',s:'neck',r:'common'},{id:72,n:'Blaue Schleife',e:'🔵',s:'neck',r:'common'},
+{id:73,n:'Grüne Schleife',e:'💚',s:'neck',r:'common'},{id:74,n:'Gelbe Schleife',e:'💛',s:'neck',r:'common'},
+{id:75,n:'Pink Schleife',e:'💗',s:'neck',r:'common'},{id:76,n:'Einfache Kette',e:'📿',s:'neck',r:'common'},
+{id:77,n:'Perlen Kette',e:'⚪',s:'neck',r:'common'},{id:78,n:'Blumen Kette',e:'🌸',s:'neck',r:'common'},
+{id:79,n:'Blatt Kette',e:'🍃',s:'neck',r:'common'},{id:80,n:'Einfache Krawatte',e:'👔',s:'neck',r:'common'},
+{id:81,n:'Blaue Krawatte',e:'🔵',s:'neck',r:'common'},{id:82,n:'Rote Krawatte',e:'❤️',s:'neck',r:'common'},
+{id:83,n:'Mini Glöckchen',e:'🔔',s:'neck',r:'common'},{id:84,n:'Kleine Feder',e:'🪶',s:'neck',r:'common'},
+{id:85,n:'Kleine Münze',e:'🪙',s:'neck',r:'common'},{id:86,n:'Mini Edelstein',e:'💎',s:'neck',r:'common'},
+{id:87,n:'Einfaches Band',e:'🎗️',s:'neck',r:'common'},{id:88,n:'Dünnes Halsband',e:'⬛',s:'neck',r:'common'},
+{id:89,n:'Türkise Schleife',e:'💚',s:'neck',r:'common'},{id:90,n:'Korallen Kette',e:'🪸',s:'neck',r:'common'},
+// ── COMMON BODY (91-120) ──
+{id:91,n:'Rotes T-Shirt',e:'👕',s:'body',r:'common'},{id:92,n:'Blaues T-Shirt',e:'👕',s:'body',r:'common'},
+{id:93,n:'Grünes T-Shirt',e:'👕',s:'body',r:'common'},{id:94,n:'Gelbes T-Shirt',e:'👕',s:'body',r:'common'},
+{id:95,n:'Pink T-Shirt',e:'👕',s:'body',r:'common'},{id:96,n:'Lila T-Shirt',e:'👕',s:'body',r:'common'},
+{id:97,n:'Orange T-Shirt',e:'👕',s:'body',r:'common'},{id:98,n:'Gestreiftes T-Shirt',e:'👕',s:'body',r:'common'},
+{id:99,n:'Stern T-Shirt',e:'⭐',s:'body',r:'common'},{id:100,n:'Herz T-Shirt',e:'❤️',s:'body',r:'common'},
+{id:101,n:'Einfacher Umhang',e:'🦸',s:'body',r:'common'},{id:102,n:'Mini Rucksack',e:'🎒',s:'body',r:'common'},
+{id:103,n:'Baby Flügel',e:'🕊️',s:'body',r:'common'},{id:104,n:'Blumen Umhang',e:'🌸',s:'body',r:'common'},
+{id:105,n:'Polka Dot Shirt',e:'⚫',s:'body',r:'common'},{id:106,n:'Kariertes Shirt',e:'♟️',s:'body',r:'common'},
+{id:107,n:'Einfache Weste',e:'🧥',s:'body',r:'common'},{id:108,n:'Mini Hoodie',e:'👘',s:'body',r:'common'},
+{id:109,n:'Kleine Jacke',e:'🧥',s:'body',r:'common'},{id:110,n:'Kleines Schild',e:'🛡️',s:'body',r:'common'},
+{id:111,n:'Blatt Umhang',e:'🍃',s:'body',r:'common'},{id:112,n:'Wolken Umhang',e:'☁️',s:'body',r:'common'},
+{id:113,n:'Regenbogen Shirt',e:'🌈',s:'body',r:'common'},{id:114,n:'Stern Umhang',e:'⭐',s:'body',r:'common'},
+{id:115,n:'Kuscheliger Pullover',e:'🧶',s:'body',r:'common'},{id:116,n:'Weicher Hoodie',e:'🤍',s:'body',r:'common'},
+{id:117,n:'Tank Top',e:'👙',s:'body',r:'common'},{id:118,n:'Türkises Shirt',e:'🩵',s:'body',r:'common'},
+{id:119,n:'Korallen Shirt',e:'🪸',s:'body',r:'common'},{id:120,n:'Minz Weste',e:'💚',s:'body',r:'common'},
+// ── COMMON AURA (121-150) ──
+{id:121,n:'Roter Schimmer',e:'❤️',s:'aura',r:'common'},{id:122,n:'Blauer Schimmer',e:'💙',s:'aura',r:'common'},
+{id:123,n:'Grüner Schimmer',e:'💚',s:'aura',r:'common'},{id:124,n:'Gelber Schimmer',e:'💛',s:'aura',r:'common'},
+{id:125,n:'Pink Schimmer',e:'💗',s:'aura',r:'common'},{id:126,n:'Orange Schimmer',e:'🧡',s:'aura',r:'common'},
+{id:127,n:'Lila Schimmer',e:'💜',s:'aura',r:'common'},{id:128,n:'Weißer Schimmer',e:'🤍',s:'aura',r:'common'},
+{id:129,n:'Cyan Schimmer',e:'🩵',s:'aura',r:'common'},{id:130,n:'Türkis Schimmer',e:'💎',s:'aura',r:'common'},
+{id:131,n:'Sanftes Glühen',e:'✨',s:'aura',r:'common'},{id:132,n:'Leises Pulsieren',e:'💫',s:'aura',r:'common'},
+{id:133,n:'Winzige Funken',e:'⚡',s:'aura',r:'common'},{id:134,n:'Sanfter Dunst',e:'🌫️',s:'aura',r:'common'},
+{id:135,n:'Leichter Nebel',e:'🌁',s:'aura',r:'common'},{id:136,n:'Warmes Glühen',e:'🌅',s:'aura',r:'common'},
+{id:137,n:'Kühles Glühen',e:'🌊',s:'aura',r:'common'},{id:138,n:'Rosiges Glühen',e:'🌷',s:'aura',r:'common'},
+{id:139,n:'Goldener Glanz',e:'🌟',s:'aura',r:'common'},{id:140,n:'Silberner Glanz',e:'🌙',s:'aura',r:'common'},
+{id:141,n:'Minze Glühen',e:'🍃',s:'aura',r:'common'},{id:142,n:'Lavendel Glühen',e:'💜',s:'aura',r:'common'},
+{id:143,n:'Pfirsich Glühen',e:'🍑',s:'aura',r:'common'},{id:144,n:'Himmel Glühen',e:'☁️',s:'aura',r:'common'},
+{id:145,n:'Korallen Glühen',e:'🪸',s:'aura',r:'common'},{id:146,n:'Bernstein Glühen',e:'🟡',s:'aura',r:'common'},
+{id:147,n:'Jade Glühen',e:'💚',s:'aura',r:'common'},{id:148,n:'Indigo Glühen',e:'🔵',s:'aura',r:'common'},
+{id:149,n:'Rosen Glühen',e:'🌹',s:'aura',r:'common'},{id:150,n:'Lila Glühen',e:'💜',s:'aura',r:'common'},
+// ── RARE HATS (151-170) ──
+{id:151,n:'Zauberhut',e:'🧙',s:'hat',r:'rare'},{id:152,n:'Fedora',e:'🎩',s:'hat',r:'rare'},
+{id:153,n:'Kochmütze',e:'👨‍🍳',s:'hat',r:'rare'},{id:154,n:'Piraten Hut',e:'🏴‍☠️',s:'hat',r:'rare'},
+{id:155,n:'Party Hut',e:'🎉',s:'hat',r:'rare'},{id:156,n:'Wikinger Helm',e:'⚔️',s:'hat',r:'rare'},
+{id:157,n:'Cowboy Hut',e:'🤠',s:'hat',r:'rare'},{id:158,n:'Detektiv Hut',e:'🔍',s:'hat',r:'rare'},
+{id:159,n:'Narren Hut',e:'🃏',s:'hat',r:'rare'},{id:160,n:'Hasen Ohren',e:'🐰',s:'hat',r:'rare'},
+{id:161,n:'Fuchs Ohren',e:'🦊',s:'hat',r:'rare'},{id:162,n:'Katzen Ohren',e:'🐱',s:'hat',r:'rare'},
+{id:163,n:'Drachen Hörner',e:'🐉',s:'hat',r:'rare'},{id:164,n:'Blumen Krone',e:'🌺',s:'hat',r:'rare'},
+{id:165,n:'Blatt Krone',e:'🍃',s:'hat',r:'rare'},{id:166,n:'Stern Krone',e:'⭐',s:'hat',r:'rare'},
+{id:167,n:'Wolken Hut',e:'☁️',s:'hat',r:'rare'},{id:168,n:'Donner Hut',e:'⚡',s:'hat',r:'rare'},
+{id:169,n:'Eis Krone',e:'❄️',s:'hat',r:'rare'},{id:170,n:'Feuer Tiara',e:'🔥',s:'hat',r:'rare'},
+// ── RARE FACE (171-190) ──
+{id:171,n:'Coole Sonnenbrille',e:'🕶️',s:'face',r:'rare'},{id:172,n:'Monokel',e:'🧐',s:'face',r:'rare'},
+{id:173,n:'Anime Rötung',e:'💢',s:'face',r:'rare'},{id:174,n:'VR Brille',e:'🥽',s:'face',r:'rare'},
+{id:175,n:'Katzen Schnurrbart',e:'🐱',s:'face',r:'rare'},{id:176,n:'Fuchs Markierung',e:'🦊',s:'face',r:'rare'},
+{id:177,n:'Sommersprossen Sturm',e:'✨',s:'face',r:'rare'},{id:178,n:'Neon Brille',e:'🌈',s:'face',r:'rare'},
+{id:179,n:'Diamant Brille',e:'💎',s:'face',r:'rare'},{id:180,n:'Alien Augen',e:'👽',s:'face',r:'rare'},
+{id:181,n:'Schmetterlings Wimpern',e:'🦋',s:'face',r:'rare'},{id:182,n:'Glitzer Tränen',e:'💫',s:'face',r:'rare'},
+{id:183,n:'Drachen Mal',e:'🐉',s:'face',r:'rare'},{id:184,n:'Donner Mal',e:'⚡',s:'face',r:'rare'},
+{id:185,n:'Eis Kristall Auge',e:'❄️',s:'face',r:'rare'},{id:186,n:'Feuer Braue',e:'🔥',s:'face',r:'rare'},
+{id:187,n:'Mond Markierung',e:'🌙',s:'face',r:'rare'},{id:188,n:'Stern Tattoo',e:'⭐',s:'face',r:'rare'},
+{id:189,n:'Sakura Mal',e:'🌸',s:'face',r:'rare'},{id:190,n:'Regenbogen Rötung',e:'🌈',s:'face',r:'rare'},
+// ── RARE NECK (191-210) ──
+{id:191,n:'Goldkette',e:'📿',s:'neck',r:'rare'},{id:192,n:'Seiden Krawatte',e:'👔',s:'neck',r:'rare'},
+{id:193,n:'Ehrenmedaille',e:'🥇',s:'neck',r:'rare'},{id:194,n:'Perlen Kette',e:'⚪',s:'neck',r:'rare'},
+{id:195,n:'Drachen Schuppen Kette',e:'🐉',s:'neck',r:'rare'},{id:196,n:'Amethyst Anhänger',e:'💜',s:'neck',r:'rare'},
+{id:197,n:'Smaragd Tropfen',e:'💚',s:'neck',r:'rare'},{id:198,n:'Rubin Halsband',e:'❤️',s:'neck',r:'rare'},
+{id:199,n:'Saphir Schnur',e:'💙',s:'neck',r:'rare'},{id:200,n:'Diamant Stück',e:'💎',s:'neck',r:'rare'},
+{id:201,n:'Feder Boa',e:'🪶',s:'neck',r:'rare'},{id:202,n:'Kosmische Perle',e:'🌌',s:'neck',r:'rare'},
+{id:203,n:'Kristall Tropfen',e:'💎',s:'neck',r:'rare'},{id:204,n:'Donner Charm',e:'⚡',s:'neck',r:'rare'},
+{id:205,n:'Eis Anhänger',e:'❄️',s:'neck',r:'rare'},{id:206,n:'Feuer Medaillon',e:'🔥',s:'neck',r:'rare'},
+{id:207,n:'Mond Kette',e:'🌙',s:'neck',r:'rare'},{id:208,n:'Stern Halsband',e:'⭐',s:'neck',r:'rare'},
+{id:209,n:'Kleeblatt Charm',e:'🍀',s:'neck',r:'rare'},{id:210,n:'Glücks Münze',e:'🪙',s:'neck',r:'rare'},
+// ── RARE BODY (211-230) ──
+{id:211,n:'Superhelden Cape',e:'🦸',s:'body',r:'rare'},{id:212,n:'Leder Jacke',e:'🧥',s:'body',r:'rare'},
+{id:213,n:'Ninja Robe',e:'🥷',s:'body',r:'rare'},{id:214,n:'Ritter Rüstung',e:'⚔️',s:'body',r:'rare'},
+{id:215,n:'Drachen Schuppen Weste',e:'🐉',s:'body',r:'rare'},{id:216,n:'Eis Kristall Rüstung',e:'❄️',s:'body',r:'rare'},
+{id:217,n:'Donner Mantel',e:'⚡',s:'body',r:'rare'},{id:218,n:'Feuer Cape',e:'🔥',s:'body',r:'rare'},
+{id:219,n:'Stern Mantel',e:'⭐',s:'body',r:'rare'},{id:220,n:'Mond Robe',e:'🌙',s:'body',r:'rare'},
+{id:221,n:'Raumanzug Top',e:'🚀',s:'body',r:'rare'},{id:222,n:'Piraten Mantel',e:'🏴‍☠️',s:'body',r:'rare'},
+{id:223,n:'Samurai Top',e:'⚔️',s:'body',r:'rare'},{id:224,n:'Hexen Robe',e:'🧙',s:'body',r:'rare'},
+{id:225,n:'Zauberer Mantel',e:'🪄',s:'body',r:'rare'},{id:226,n:'Engel Robe',e:'😇',s:'body',r:'rare'},
+{id:227,n:'Teufel Cape',e:'😈',s:'body',r:'rare'},{id:228,n:'Fuchs Mantel',e:'🦊',s:'body',r:'rare'},
+{id:229,n:'Katzen Anzug',e:'🐱',s:'body',r:'rare'},{id:230,n:'Hasen Anzug',e:'🐰',s:'body',r:'rare'},
+// ── RARE AURA (231-250) ──
+{id:231,n:'Elektrischer Funke',e:'⚡',s:'aura',r:'rare'},{id:232,n:'Feuer Ring',e:'🔥',s:'aura',r:'rare'},
+{id:233,n:'Eis Ring',e:'❄️',s:'aura',r:'rare'},{id:234,n:'Donner Ring',e:'🌩️',s:'aura',r:'rare'},
+{id:235,n:'Natur Blüte',e:'🌸',s:'aura',r:'rare'},{id:236,n:'Wasser Wellen',e:'🌊',s:'aura',r:'rare'},
+{id:237,n:'Dunkler Nebel',e:'🌑',s:'aura',r:'rare'},{id:238,n:'Heiliges Licht',e:'☀️',s:'aura',r:'rare'},
+{id:239,n:'Schatten Puls',e:'🌚',s:'aura',r:'rare'},{id:240,n:'Stern Ausbruch',e:'💥',s:'aura',r:'rare'},
+{id:241,n:'Neon Ring',e:'🌈',s:'aura',r:'rare'},{id:242,n:'Kristall Dunst',e:'💎',s:'aura',r:'rare'},
+{id:243,n:'Drachen Atem',e:'🐉',s:'aura',r:'rare'},{id:244,n:'Mond Strahl',e:'🌙',s:'aura',r:'rare'},
+{id:245,n:'Sonnen Strahl',e:'☀️',s:'aura',r:'rare'},{id:246,n:'Sturm Wolke',e:'⛈️',s:'aura',r:'rare'},
+{id:247,n:'Regenbogen Schimmer',e:'🌈',s:'aura',r:'rare'},{id:248,n:'Kosmischer Staub',e:'🌌',s:'aura',r:'rare'},
+{id:249,n:'Glut Glühen',e:'🌋',s:'aura',r:'rare'},{id:250,n:'Frost Dunst',e:'🌨️',s:'aura',r:'rare'},
+// ── EPIC HATS (251-260) ──
+{id:251,n:'Königskrone',e:'👑',s:'hat',r:'epic'},{id:252,n:'Narren Krone',e:'🃏',s:'hat',r:'epic'},
+{id:253,n:'Samurai Helm',e:'⛩️',s:'hat',r:'epic'},{id:254,n:'Weltraum Helm',e:'🚀',s:'hat',r:'epic'},
+{id:255,n:'Drachen Krone',e:'🐉',s:'hat',r:'epic'},{id:256,n:'Kristall Krone',e:'💎',s:'hat',r:'epic'},
+{id:257,n:'Donner Helm',e:'⚡',s:'hat',r:'epic'},{id:258,n:'Schatten Krone',e:'🌑',s:'hat',r:'epic'},
+{id:259,n:'Engel Krone',e:'😇',s:'hat',r:'epic'},{id:260,n:'Legendäre Kappe',e:'🏆',s:'hat',r:'epic'},
+// ── EPIC FACE (261-270) ──
+{id:261,n:'Laser Augen',e:'🔴',s:'face',r:'epic'},{id:262,n:'Herz Augen',e:'😍',s:'face',r:'epic'},
+{id:263,n:'Stern Augen',e:'🤩',s:'face',r:'epic'},{id:264,n:'Galaxie Augen',e:'🌌',s:'face',r:'epic'},
+{id:265,n:'Drachen Augen',e:'🐉',s:'face',r:'epic'},{id:266,n:'Donner Augen',e:'⚡',s:'face',r:'epic'},
+{id:267,n:'Kristall Monokel',e:'💎',s:'face',r:'epic'},{id:268,n:'Schatten Mal',e:'🌑',s:'face',r:'epic'},
+{id:269,n:'Engel Tränen',e:'😇',s:'face',r:'epic'},{id:270,n:'Kosmischer Blick',e:'🌠',s:'face',r:'epic'},
+// ── EPIC NECK (271-280) ──
+{id:271,n:'Drachen Medaillon',e:'🐉',s:'neck',r:'epic'},{id:272,n:'Regenbogen Kette',e:'🌈',s:'neck',r:'epic'},
+{id:273,n:'Kosmischer Anhänger',e:'🌌',s:'neck',r:'epic'},{id:274,n:'Donner Amulett',e:'⚡',s:'neck',r:'epic'},
+{id:275,n:'Kristall Halsband',e:'💎',s:'neck',r:'epic'},{id:276,n:'Schatten Charm',e:'🌑',s:'neck',r:'epic'},
+{id:277,n:'Engel Anhänger',e:'😇',s:'neck',r:'epic'},{id:278,n:'Galaxie Locket',e:'🌌',s:'neck',r:'epic'},
+{id:279,n:'Legendäre Kette',e:'🏆',s:'neck',r:'epic'},{id:280,n:'Uraltes Talisman',e:'🔮',s:'neck',r:'epic'},
+// ── EPIC BODY (281-290) ──
+{id:281,n:'Drachen Flügel',e:'🐉',s:'body',r:'epic'},{id:282,n:'Engel Flügel',e:'😇',s:'body',r:'epic'},
+{id:283,n:'Legendärer Umhang',e:'🏆',s:'body',r:'epic'},{id:284,n:'Galaxie Mantel',e:'🌌',s:'body',r:'epic'},
+{id:285,n:'Donner Flügel',e:'⚡',s:'body',r:'epic'},{id:286,n:'Kristall Rüstung',e:'💎',s:'body',r:'epic'},
+{id:287,n:'Schatten Mantel',e:'🌑',s:'body',r:'epic'},{id:288,n:'Uralte Rüstung',e:'🛡️',s:'body',r:'epic'},
+{id:289,n:'Kosmischer Anzug',e:'🌌',s:'body',r:'epic'},{id:290,n:'Sturm Flügel',e:'⛈️',s:'body',r:'epic'},
+// ── EPIC AURA (291-300) ──
+{id:291,n:'Regenbogen Aura',e:'🌈',s:'aura',r:'epic'},{id:292,n:'Galaxie Spirale',e:'🌌',s:'aura',r:'epic'},
+{id:293,n:'Drachen Brüllen',e:'🐉',s:'aura',r:'epic'},{id:294,n:'Donner Sturm',e:'⛈️',s:'aura',r:'epic'},
+{id:295,n:'Kristall Kaskade',e:'💎',s:'aura',r:'epic'},{id:296,n:'Schatten Reich',e:'🌑',s:'aura',r:'epic'},
+{id:297,n:'Engel Segen',e:'😇',s:'aura',r:'epic'},{id:298,n:'Kosmische Explosion',e:'💥',s:'aura',r:'epic'},
+{id:299,n:'Uralte Macht',e:'🔮',s:'aura',r:'epic'},{id:300,n:'Stern Nova',e:'🌠',s:'aura',r:'epic'},
+// ── UNIQUE (301-310) ──
+{id:301,n:'Fitís Legendäre Krone',e:'👑',s:'hat',r:'unique'},
+{id:302,n:'Göttlicher Heiligenschein',e:'✝️',s:'hat',r:'unique'},
+{id:303,n:'Kosmische Vision',e:'🌠',s:'face',r:'unique'},
+{id:304,n:'Regenbogen Freudentränen',e:'🌈',s:'face',r:'unique'},
+{id:305,n:'Artefakt der Champions',e:'🏆',s:'neck',r:'unique'},
+{id:306,n:'Kosmische Seelen Kette',e:'🌌',s:'neck',r:'unique'},
+{id:307,n:'Flügel der Ewigkeit',e:'🕊️',s:'body',r:'unique'},
+{id:308,n:'Universum Mantel',e:'🌌',s:'body',r:'unique'},
+{id:309,n:'Göttliches Licht Fitís',e:'☀️',s:'aura',r:'unique'},
+{id:310,n:'Leere der Schöpfung',e:'🕳️',s:'aura',r:'unique'},
+];
+
+const RARITY_WEIGHTS = { common:65, rare:25, epic:8, unique:2 };
+const CHEST_XP_THRESHOLD = 150;
+
+function getItemById(id) { return ITEMS_DB.find(i => i.id === id); }
+function getItemsByRarity(r) { return ITEMS_DB.filter(i => i.r === r); }
+
+// ─── FITI MASCOT ─────────────────────────────────────────────────────────────
+
+function getFitiSVG(size = 160) {
+  const eq = state.equipped || {};
+  const hat  = eq.hat  ? getItemById(eq.hat)  : null;
+  const face = eq.face ? getItemById(eq.face) : null;
+  const neck = eq.neck ? getItemById(eq.neck) : null;
+  const body = eq.body ? getItemById(eq.body) : null;
+  const aura = eq.aura ? getItemById(eq.aura) : null;
+
+  const auraColors = {common:'rgba(108,99,255,0.15)',rare:'rgba(59,130,246,0.25)',epic:'rgba(139,92,246,0.3)',unique:'rgba(245,158,11,0.35)'};
+  const auraColor = aura ? auraColors[aura.r] : 'transparent';
+  const auraAnim  = aura && aura.r === 'unique' ? 'animation:uniquePulse 2s ease-in-out infinite' : '';
+
+  return `<svg viewBox="0 0 120 130" width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="fitiGrad" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#9c8fff"/>
+        <stop offset="100%" stop-color="#6c63ff"/>
+      </radialGradient>
+      <filter id="fitiShadow"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="rgba(108,99,255,0.3)"/></filter>
+    </defs>
+    ${aura ? `<circle cx="60" cy="72" r="52" fill="${auraColor}" style="${auraAnim}"/>` : ''}
+    ${body ? `<text x="60" y="102" text-anchor="middle" font-size="22" style="user-select:none">${body.e}</text>` : ''}
+    <ellipse cx="60" cy="75" rx="46" ry="43" fill="url(#fitiGrad)" filter="url(#fitiShadow)"/>
+    <ellipse cx="44" cy="56" rx="9" ry="6" fill="rgba(255,255,255,0.18)" transform="rotate(-20 44 56)"/>
+    <circle cx="45" cy="65" r="7" fill="white"/>
+    <circle cx="75" cy="65" r="7" fill="white"/>
+    <circle cx="46.5" cy="66.5" r="4" fill="#1a1040"/>
+    <circle cx="76.5" cy="66.5" r="4" fill="#1a1040"/>
+    <circle cx="48" cy="64" r="1.5" fill="white"/>
+    <circle cx="78" cy="64" r="1.5" fill="white"/>
+    <ellipse cx="33" cy="76" rx="8" ry="5" fill="rgba(255,150,150,0.35)"/>
+    <ellipse cx="87" cy="76" rx="8" ry="5" fill="rgba(255,150,150,0.35)"/>
+    <path d="M 50 80 Q 60 90 70 80" stroke="#1a1040" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="15" cy="83" rx="13" ry="9" fill="#7c73ff" transform="rotate(-25 15 83)"/>
+    <ellipse cx="105" cy="83" rx="13" ry="9" fill="#7c73ff" transform="rotate(25 105 83)"/>
+    ${face ? `<text x="60" y="72" text-anchor="middle" font-size="16" style="user-select:none">${face.e}</text>` : ''}
+    ${neck ? `<text x="60" y="122" text-anchor="middle" font-size="18" style="user-select:none">${neck.e}</text>` : ''}
+    ${hat  ? `<text x="60" y="30"  text-anchor="middle" font-size="26" style="user-select:none">${hat.e}</text>`  : ''}
+  </svg>`;
+}
+
+// ─── LOOT SYSTEM ─────────────────────────────────────────────────────────────
+
+function rollRarity() {
+  const r = Math.random() * 100;
+  if (r < 2)  return 'unique';
+  if (r < 10) return 'epic';
+  if (r < 35) return 'rare';
+  return 'common';
+}
+
+function rollItem() {
+  const rarity = rollRarity();
+  const pool = getItemsByRarity(rarity);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function checkChestEarned(xpGained) {
+  if (!state.hasOwnProperty('xpAccumulated')) state.xpAccumulated = 0;
+  if (!state.hasOwnProperty('pendingChests'))  state.pendingChests = 0;
+  state.xpAccumulated += xpGained;
+  let earned = 0;
+  while (state.xpAccumulated >= CHEST_XP_THRESHOLD) {
+    state.xpAccumulated -= CHEST_XP_THRESHOLD;
+    state.pendingChests++;
+    earned++;
+  }
+  if (earned > 0) {
+    updateChestBadge();
+    setTimeout(() => showToast(`📦 ${earned} neue Truhe${earned>1?'n':''}! Schau im Schatz-Tab vorbei!`), 500);
+  }
+  updateChestUI();
+}
+
+function updateChestBadge() {
+  const badge = document.getElementById('chestBadge');
+  if (!badge) return;
+  const n = state.pendingChests || 0;
+  badge.textContent = n > 9 ? '9+' : n;
+  badge.classList.toggle('show', n > 0);
+}
+
+function updateChestUI() {
+  const count = document.getElementById('chestCount');
+  const btn   = document.getElementById('chestOpenBtn');
+  const lbl   = document.getElementById('chestXpLabel');
+  const fill  = document.getElementById('chestXpFill');
+  const n = state.pendingChests || 0;
+  const acc = state.xpAccumulated || 0;
+  if (count) count.textContent = n;
+  if (btn)   btn.disabled = n === 0;
+  if (lbl)   lbl.textContent = `${acc} / ${CHEST_XP_THRESHOLD} XP`;
+  if (fill)  fill.style.width = Math.min(100, (acc / CHEST_XP_THRESHOLD) * 100) + '%';
+}
+
+let _pendingItem = null;
+
+function openNextChest() {
+  if (!state.pendingChests || state.pendingChests <= 0) return;
+  _pendingItem = rollItem();
+  const overlay = document.getElementById('chestModalOverlay');
+  const inner   = document.getElementById('chestModalInner');
+  inner.innerHTML = `
+    <div class="chest-modal-icon" id="chestIcon" onclick="revealChestItem()">📦</div>
+    <div class="chest-modal-title">Truhe gefunden!</div>
+    <div class="chest-modal-sub">Tippe auf die Truhe um sie zu öffnen</div>`;
+  overlay.classList.add('show');
+}
+
+function revealChestItem() {
+  if (!_pendingItem) return;
+  const it = _pendingItem;
+  const rarityStars = {common:'⬜',rare:'🔵🔵',epic:'🟣🟣🟣',unique:'🌟🌟🌟🌟'};
+  const rarityNames = {common:'Common',rare:'Rare',epic:'Epic',unique:'Unique ✨'};
+  const rarityColors = {common:'#9ca3af',rare:'#3b82f6',epic:'#8b5cf6',unique:'#f59e0b'};
+  const isDupe = (state.inventory||[]).some(e => e.id === it.id);
+  const slotNames = {hat:'Hut',face:'Gesicht',neck:'Hals',body:'Körper',aura:'Aura'};
+
+  const inner = document.getElementById('chestModalInner');
+  inner.innerHTML = `
+    <div class="chest-modal-icon opened">🎉</div>
+    <div class="chest-modal-title">Item erhalten!</div>
+    <div class="chest-item-reveal r-${it.r}" style="border-color:${rarityColors[it.r]}">
+      <span class="chest-item-emoji">${it.e}</span>
+      <div class="chest-item-name">${it.n}</div>
+      <div class="chest-item-slot">${slotNames[it.s]}</div>
+      <div class="chest-stars">${rarityStars[it.r]}</div>
+      <span class="rarity-badge ${it.r}">${rarityNames[it.r]}</span>
+      ${isDupe ? '<div class="chest-dupe-badge">Duplikat</div>' : ''}
+    </div>
+    <button class="chest-modal-btn" onclick="collectChestItem()">✅ Einsammeln</button>`;
+
+  // Dekrementieren
+  state.pendingChests = Math.max(0, (state.pendingChests||1) - 1);
+  state.totalChestsOpened = (state.totalChestsOpened||0) + 1;
+  if (!state.inventory) state.inventory = [];
+  state.inventory.push({ id: it.id, obtainedAt: Date.now() });
+  saveState();
+  updateChestBadge();
+  updateChestUI();
+  _pendingItem = null;
+  if (it.r === 'unique') gainXP(100, `🌟 Unique Item: ${it.n}`);
+  else if (it.r === 'epic') gainXP(25, `🟣 Epic Item: ${it.n}`);
+}
+
+function collectChestItem() {
+  document.getElementById('chestModalOverlay').classList.remove('show');
+  renderSchatz();
+}
+
+// ─── SCHATZ TAB ──────────────────────────────────────────────────────────────
+
+let _invFilter = 'all';
+
+function renderSchatz() {
+  if (!state.equipped) state.equipped = {hat:null,face:null,neck:null,body:null,aura:null};
+  updateChestUI();
+  updateChestBadge();
+
+  // Fiti display
+  const fd = document.getElementById('fitiDisplaySchatz');
+  if (fd) fd.innerHTML = getFitiSVG(150);
+
+  // Equipment slots
+  const slotDefs = [{s:'hat',lbl:'Hut'},{s:'face',lbl:'Gesicht'},{s:'neck',lbl:'Hals'},{s:'body',lbl:'Körper'},{s:'aura',lbl:'Aura'}];
+  slotDefs.forEach(({s,lbl}) => {
+    const el = document.getElementById('slot-'+s);
+    if (!el) return;
+    const eqId = state.equipped[s];
+    const item = eqId ? getItemById(eqId) : null;
+    if (item) {
+      el.className = `equip-slot filled r-${item.r}`;
+      el.innerHTML = `<span class="slot-emoji">${item.e}</span><span class="slot-label">${lbl}</span>`;
+    } else {
+      const def = {hat:'🎩',face:'👓',neck:'📿',body:'👕',aura:'✨'};
+      el.className = 'equip-slot';
+      el.innerHTML = `<span class="slot-emoji" style="opacity:0.3">${def[s]}</span><span class="slot-label">${lbl}</span>`;
+    }
+  });
+
+  renderInventoryGrid();
+}
+
+function renderInventoryGrid(filter) {
+  if (filter !== undefined) _invFilter = filter;
+  const grid = document.getElementById('inventoryGrid');
+  if (!grid) return;
+  const inv = state.inventory || [];
+  const countEl = document.getElementById('invCount');
+  if (countEl) countEl.textContent = `(${inv.length})`;
+  if (!inv.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📦</div>Öffne Truhen um Items zu sammeln!</div>';
+    return;
+  }
+  const filtered = inv.filter(e => {
+    const item = getItemById(e.id);
+    return item && (_invFilter === 'all' || item.s === _invFilter);
+  });
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div>Keine Items in dieser Kategorie</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(e => {
+    const item = getItemById(e.id);
+    if (!item) return '';
+    const isEq = state.equipped[item.s] === item.id;
+    return `<div class="inv-item r-${item.r} ${isEq?'equipped':''}" onclick="toggleEquip(${item.id})" title="${item.n}">
+      ${item.e}
+      <div class="inv-name">${item.n}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterInv(f, btn) {
+  _invFilter = f;
+  document.querySelectorAll('#invFilters .fasting-hour-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderInventoryGrid();
+}
+
+function toggleEquip(itemId) {
+  const item = getItemById(itemId);
+  if (!item) return;
+  if (!state.equipped) state.equipped = {};
+  if (state.equipped[item.s] === item.id) {
+    state.equipped[item.s] = null; // ablegen
+  } else {
+    state.equipped[item.s] = item.id; // anlegen
+  }
+  saveState();
+  renderSchatz();
+}
+
+function showSlotInventory(slot) {
+  const slotNames = {hat:'Hüte',face:'Gesicht',neck:'Hals',body:'Körper',aura:'Auras'};
+  document.getElementById('slotModalTitle').textContent = slotNames[slot] || slot;
+  const inv = (state.inventory||[]).filter(e => { const i = getItemById(e.id); return i && i.s === slot; });
+  const grid = document.getElementById('slotInventoryGrid');
+  if (!inv.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📦</div>Keine Items in diesem Slot</div>';
+  } else {
+    grid.innerHTML = inv.map(e => {
+      const item = getItemById(e.id);
+      if (!item) return '';
+      const isEq = state.equipped[slot] === item.id;
+      return `<div class="inv-item r-${item.r} ${isEq?'equipped':''}" onclick="toggleEquip(${item.id})" title="${item.n}">
+        ${item.e}<div class="inv-name">${item.n}</div></div>`;
+    }).join('');
+  }
+  document.getElementById('slotModalOverlay').classList.add('show');
+}
+
+function closeSlotModal(e) {
+  if (e && e.target !== document.getElementById('slotModalOverlay')) return;
+  document.getElementById('slotModalOverlay').classList.remove('show');
 }
 
 // ─── FASTING ────────────────────────────────────────────────────────────────
