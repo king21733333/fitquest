@@ -3247,9 +3247,11 @@ function checkChestEarned(xpGained) {
     state.pendingChests++;
     earned++;
   }
+  saveState();
   if (earned > 0) {
     updateChestBadge();
-    setTimeout(() => { showToast(`📦 ${earned} neue Truhe${earned>1?'n':''}! Schau im Schatz-Tab vorbei!`); renderFitiHome(); }, 500);
+    renderFitiHome();
+    setTimeout(() => openNextChest(), 800);
   }
   updateChestUI();
 }
